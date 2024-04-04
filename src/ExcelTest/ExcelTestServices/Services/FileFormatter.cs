@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using ExcelTestServices.Interfaaces;
 
 namespace ExcelTestServices.Services
@@ -20,8 +21,9 @@ namespace ExcelTestServices.Services
                     {
                         foreach (var row in worksheet.RowsUsed())
                         {
-                            if (int.TryParse(row.Cell(1).Value.ToString(), out var date) && date == lastYearNeeded) break;
-                            writer.WriteLine(string.Join(",", row.Cells().Select(cell => cell.Value.ToString())));
+                            var cellsRow = row.Cells().Select(cell => cell.Value.ToString());
+                            if (int.TryParse(cellsRow.First(), out var date) && date == lastYearNeeded) break;
+                            writer.WriteLine(string.Join(",", cellsRow));
                         }
                     }
                 }
